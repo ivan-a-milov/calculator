@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+    calculator_nginx:
+        image: nginx:latest
+        container_name: calculator_nginx
+        ports:
+            - "8080:80"
+        volumes:
+            - ./docker/nginx:/etc/nginx/conf.d
+            - ./:/var/www/
+        links:
+            - calculator_php
+
+    calculator_php:
+        build:
+            context: ./docker/php
+            args:
+                USER_ID: 1000
+                GROUP_ID: 1000
+        container_name: calculator_php
+        volumes:
+            - ./:/var/www/
